@@ -1,18 +1,21 @@
 FROM python
 
 RUN apt-get update && apt-get install -y \
+    --no-install-recommends \
     apt-transport-https \
     ca-certificates \
     curl \
-    jekyll \
     fonts-noto-color-emoji \
     gnupg \
-    --no-install-recommends \
+    ruby-full \
+    build-essential \
+    zlib1g-dev \
     && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update && apt-get install -y \
     google-chrome-stable \
-    --no-install-recommends
+    --no-install-recommends \
+    && gem install jekyll bundler
 
 # Google Chrome doesn't run from the root user.
 RUN groupadd chrome && useradd --uid=1001 -g chrome -s /bin/bash -G audio,video chrome \
